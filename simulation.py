@@ -43,7 +43,7 @@ class Simulation(object):
                     and id
                     < self.pop_size * self.vacc_percentage + self.initial_infected
                     else True,
-                    False if infected >= self.initial_infected else True,
+                    None if infected >= self.initial_infected else self.virus,
                 )
             )
             if infected < self.initial_infected:
@@ -73,16 +73,24 @@ class Simulation(object):
         should_continue = True
 
         while should_continue:
-            # TODO: Increment the time_step_counter
-            # TODO: for every iteration of this loop, call self.time_step()
+            # Increment the time_step_counter
+            time_step_counter += 1
+            # for every iteration of this loop, call self.time_step()
+            self.time_step()
             # Call the _simulation_should_continue method to determine if
             # the simulation should continue
             should_continue = self._simulation_should_continue()
-            pass
 
-        # TODO: Write meta data to the logger. This should be starting
+        # Write meta data to the logger. This should be starting
         # statistics for the simulation. It should include the initial
         # population size and the virus.
+        self.logger.write_metadata(
+            self.pop_size,
+            self.vacc_percentage,
+            self.virus.virus_name,
+            self.virus.mortality_rate,
+            self.virus.basic_repro_num,
+        )
 
         # TODO: When the simulation completes you should conclude this with
         # the logger. Send the final data to the logger.
@@ -92,12 +100,20 @@ class Simulation(object):
         # new infections, and determine if vaccinations and fatalities from infections
         # The goal here is have each infected person interact with a number of other
         # people in the population
-        # TODO: Loop over your population
+        # Loop over your population
         # For each person if that person is infected
         # have that person interact with 100 other living people
         # Run interactions by calling the interaction method below. That method
         # takes the infected person and a random person
-        pass
+        for person in self.population:
+            if person.is_alive is True and person.infection is not None:
+                for _ in range(100):
+                    self.interaction(
+                        person,
+                        random.choice(
+                            filter(lambda p: p.is_alive is True, self.population)
+                        ),
+                    )
 
     def interaction(self, infected_person, random_person):
         # TODO: Finish this method.
