@@ -89,9 +89,9 @@ class Simulation(object):
         self.logger.write_metadata(
             self.pop_size,
             self.vacc_percentage,
-            self.virus.virus_name,
+            self.virus.name,
             self.virus.mortality_rate,
-            self.virus.basic_repro_num,
+            self.virus.repro_rate,
         )
 
         # TODO: When the simulation completes you should conclude this with
@@ -113,7 +113,7 @@ class Simulation(object):
                     self.interaction(
                         person,
                         random.choice(
-                            filter(lambda p: p.is_alive is True, self.population)
+                            list(filter(lambda p: p.is_alive is True, self.population))
                         ),
                     )
                 person.did_survive_infection()
@@ -164,4 +164,4 @@ if __name__ == "__main__":
     # sim = Simulation(pop_size, vacc_percentage, initial_infected, virus)
     sim = Simulation(bad_virus, population_size, vaccination_percentage, initial_infected_num)
 
-    # sim.run()
+    sim.run()
