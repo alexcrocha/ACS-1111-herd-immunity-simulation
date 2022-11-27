@@ -36,13 +36,13 @@ class Simulation(object):
         # The number of infected people should be equal to the the initial_infected
         population = []
         infected = 0
-        for id in range(self.pop_size):
+        for _id in range(self.pop_size):
             population.append(
                 Person(
-                    id,
+                    _id,
                     False
-                    if id < self.initial_infected
-                    and id
+                    if _id < self.initial_infected
+                    and _id
                     < self.pop_size * self.vacc_percentage + self.initial_infected
                     else True,
                     None if infected >= self.initial_infected else self.virus,
@@ -151,16 +151,16 @@ if __name__ == "__main__":
     virus_name = "Sniffles"
     repro_num = 0.5
     mortality_rate = 0.12
-    virus = Virus(virus_name, repro_num, mortality_rate)
+    bad_virus = Virus(virus_name, repro_num, mortality_rate)
 
     # Set some values used by the simulation
-    pop_size = 1000
-    vacc_percentage = 0.1
-    initial_infected = 10
+    population_size = 1000
+    vaccination_percentage = 0.1
+    initial_infected_num = 10
 
     # Make a new instance of the imulation
     # virus = Virus(virus, pop_size, vacc_percentage, initial_infected)
     # sim = Simulation(pop_size, vacc_percentage, initial_infected, virus)
-    sim = Simulation(virus, pop_size, vacc_percentage, initial_infected)
+    sim = Simulation(bad_virus, population_size, vaccination_percentage, initial_infected_num)
 
     # sim.run()
