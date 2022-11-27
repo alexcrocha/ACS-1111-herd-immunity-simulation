@@ -116,6 +116,7 @@ class Simulation(object):
                             filter(lambda p: p.is_alive is True, self.population)
                         ),
                     )
+                person.did_survive_infection()
 
         self._infect_newly_infected()
 
