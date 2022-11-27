@@ -7,6 +7,8 @@ from virus import Virus
 
 
 class Simulation(object):
+    newly_infected = []
+
     def __init__(self, virus, pop_size, vacc_percentage, initial_infected=1):
         # Create a Logger object and bind it to self.logger.
         # Remember to call the appropriate logger method in the corresponding parts of the simulation.
@@ -115,6 +117,8 @@ class Simulation(object):
                         ),
                     )
 
+        self._infect_newly_infected()
+
     def interaction(self, infected_person, random_person):
         # TODO: Finish this method.
         # The possible cases you'll need to cover are listed below:
@@ -127,14 +131,19 @@ class Simulation(object):
         #     than repro_rate, add that person to the newly infected array
         #     Simulation object's newly_infected array, so that their infected
         #     attribute can be changed to True at the end of the time step.
+        if random_person.is_vaccinated is True or random_person.infection is not None:
+            pass
+        elif random.random() < self.virus.repro_rate:
+            self.newly_infected.append(random_person)
         # TODO: Call logger method during this method.
-        pass
 
     def _infect_newly_infected(self):
-        # TODO: Call this method at the end of every time step and infect each Person.
-        # TODO: Once you have iterated through the entire list of self.newly_infected, remember
+        # Call this method at the end of every time step and infect each Person.
+        # Once you have iterated through the entire list of self.newly_infected, remember
         # to reset self.newly_infected back to an empty list.
-        pass
+        for person in self.newly_infected:
+            person.infection = self.virus
+        self.newly_infected = []
 
 
 if __name__ == "__main__":
@@ -150,7 +159,8 @@ if __name__ == "__main__":
     initial_infected = 10
 
     # Make a new instance of the imulation
-    virus = Virus(virus, pop_size, vacc_percentage, initial_infected)
-    sim = Simulation(pop_size, vacc_percentage, initial_infected, virus)
+    # virus = Virus(virus, pop_size, vacc_percentage, initial_infected)
+    # sim = Simulation(pop_size, vacc_percentage, initial_infected, virus)
+    sim = Simulation(virus, pop_size, vacc_percentage, initial_infected)
 
     # sim.run()
