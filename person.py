@@ -25,6 +25,8 @@ class Person(object):
         # The method Should return a Boolean showing if they survived.
         if random.random() < self.infection.mortality_rate:
             self.is_alive = False
+            self.is_vaccinated = False
+            self.infection = None
             return False
         else:
             self.is_vaccinated = True
