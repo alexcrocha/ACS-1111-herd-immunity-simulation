@@ -1,5 +1,5 @@
 import random
-# random.seed(42)
+# random.seed(11)
 from virus import Virus
 
 
@@ -35,7 +35,7 @@ class Person(object):
 
 if __name__ == "__main__":
     # This section is incomplete finish it and use it to test your Person class
-    # TODO Define a vaccinated person and check their attributes
+    # Define a vaccinated person and check their attributes
     vaccinated_person = Person(1, True)
     assert vaccinated_person._id == 1
     assert vaccinated_person.is_alive is True
@@ -44,25 +44,34 @@ if __name__ == "__main__":
 
     # Create an unvaccinated person and test their attributes
     unvaccinated_person = Person(2, False)
-    # TODO Test unvaccinated_person's attributes here...
+    # Test unvaccinated_person's attributes here...
+    assert unvaccinated_person._id == 2
+    assert unvaccinated_person.is_alive is True
+    assert unvaccinated_person.is_vaccinated is False
+    assert unvaccinated_person.infection is None
 
     # Test an infected person. An infected person has an infection/virus
     # Create a Virus object to give a Person object an infection
     virus = Virus("Dysentery", 0.7, 0.2)
     # Create a Person object and give them the virus infection
     infected_person = Person(3, False, virus)
-    # TODO: complete your own assert statements that test
+    # complete your own assert statements that test
     # the values of each attribute
     # assert ...
+    assert infected_person._id == 3
+    assert infected_person.is_alive is True
+    assert infected_person.is_vaccinated is False
+    assert infected_person.infection == virus
 
     # You need to check the survival of an infected person. Since the chance
     # of survival is random you need to check a group of people.
     # Create a list to hold 100 people. Use the loop below to make 100 people
     people = []
     for i in range(1, 100):
-        # TODO Make a person with an infection
-        # TODO Append the person to the people list
-        pass
+        # Make a person with an infection
+        # Append the person to the people list
+        infected_person = Person(i, False, virus)
+        people.append(infected_person)
 
     # Now that you have a list of 100 people. Resolve whether the Person
     # survives the infection or not by looping over the people list.
@@ -73,14 +82,21 @@ if __name__ == "__main__":
 
     # Count the people that survived and did not survive:
 
-    # did_survived = 0
-    # did_not_survive = 0
+    did_survived = 0
+    did_not_survive = 0
 
-    # TODO Loop over all of the people
-    # TODO If a person is_alive True add one to did_survive
-    # TODO If a person is_alive False add one to did_not_survive
+    # Loop over all of the people
+    # If a person is_alive True add one to did_survive
+    # If a person is_alive False add one to did_not_survive
+    for person in people:
+        if person.did_survive_infection() is True:
+            did_survived += 1
+        else:
+            did_not_survive += 1
 
-    # TODO When the loop is complete print your results.
+
+    # When the loop is complete print your results.
+    print(f"Survived: {did_survived}\nDid not survive: {did_not_survive}")
     # The results should roughly match the mortality rate of the virus
     # For example if the mortality rate is 0.2 rough 20% of the people
     # should succumb.
@@ -93,5 +109,18 @@ if __name__ == "__main__":
     # Assign the virus to that person's infection attribute.
 
     # Now count the infected and uninfect people from this group of people.
-    # The number of infectedf people should be roughly the same as the
+    # The number of infected people should be roughly the same as the
     # infection rate of the virus.
+
+    uninfected_people = []
+    infected_people = []
+
+    for i in range(1, 1000):
+        person = Person(i, False)
+        if random.random() < virus.repro_rate:
+            person.infection = virus
+            infected_people.append(person)
+        else:
+            uninfected_people.append(person)
+
+    print(f"Infected: {len(infected_people)}\nUninfected: {len(uninfected_people)}")
